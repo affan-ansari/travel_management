@@ -1,0 +1,7 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    {% for car in cars %}
+    <h1> {{ car }} </h1>
+    {% endfor %}
+{% endblock content %}
