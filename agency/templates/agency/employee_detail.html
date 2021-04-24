@@ -1,0 +1,19 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h2><a href="#">{{ employee.first_name }} {{ employee.last_name }}</a></h2>
+            <h4>{{ employee.contact_number }}</h4>
+            <h4>{{ employee.email }}</h4>
+            <h4>{{ employee.CNIC }}</h4>
+            <h4>{{ employee.address }}</h4>
+            {% if user.is_superuser %}
+                <div>
+                    <a class="btn btn-primary" href="{% url 'agency-update-employee' object.CNIC %}"> Update </a>
+                </div>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock content %}

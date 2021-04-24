@@ -1,0 +1,15 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-16">
+        <div class="content-section">
+            <h3>Manage Employees</h3>
+            <ul class="list-group">
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-employees-list' %}" role="button">View Employees</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-register-employee' %}" role="button">Add Employee</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-search-employee' %}" role="button">Update Employee</a>
+                <a class="btn btn-danger btn-lg btn-block" href="{% url 'agency-delete-employee' %}" role="button">Delete Employee</a>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}

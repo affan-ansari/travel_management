@@ -1,0 +1,13 @@
+
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    {% for employee in employees %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h2><a href="{% url 'employee-detail' employee.CNIC%}">{{ employee.first_name }} {{ employee.last_name }}</a></h2>
+            <h4>{{ employee.contact_number }}</h4>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

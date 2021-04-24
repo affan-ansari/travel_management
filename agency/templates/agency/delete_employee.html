@@ -1,0 +1,23 @@
+{% extends "agency/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4" > Delete Employee </legend>
+                <div class="alert alert-info border-bottom mb-4" role="alert">
+                    CNIC : XXXXX-XXXXXXX-X
+                </div>
+                {{ form|crispy }}
+                <div class="alert alert-danger" role="alert">
+                    Employee will be deleted without confirmation!
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit"> Delete</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
