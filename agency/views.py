@@ -113,3 +113,40 @@ def manage_employee(request):
     return render(request, 'agency/manage_employee.html')
 
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser == False)
+def book_custom_trip(request):
+    if request.method == 'POST':
+        form = forms.BookCustomTripForm(request.POST)
+        if form.is_valid():
+            source = form.cleaned_data.get("source")
+            destination = form.cleaned_data.get("destination")
+            start_date = form.cleaned_data.get("start_date")
+            end_date = form.cleaned_data.get("end_date")
+
+            trip = controller.add_custom_trip(source,destination,start_date,end_date)
+            messages.success(request, f'Trip added successfully!')
+            return redirect('agency-select-trip-car',trip.id)
+    else:
+        form = forms.BookCustomTripForm()
+    return render(request,'agency/book_trip.html',{'form': form})
+
+def car_list(request,pk):
+    if request.method == 'POST':
+        pass
+    else:
+        cars = controller.cars.get_cars()
+        trip = controller.trips.get_trip(pk)
+        context = {
+            'cars': cars,
+            'trip': trip
+        }
+        return render(request, 'agency/car_list.html', context)
+
+
+
+def test_func(self):
+    if self.request.user.is_superuser():
+        return True
+    else:
+        return False

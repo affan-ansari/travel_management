@@ -12,4 +12,6 @@ urlpatterns = [
     path('employee/<str:pk>/', views.EmployeeDetailView.as_view(), name='employee-detail'),
     path('delete_employee', views.delete_employee, name='agency-delete-employee'),
     path('employees',views.EmployeesView,name='agency-employees-list'),
+    path('book_custom_trip/', views.book_custom_trip,name = 'agency-book-custom-trip'),
+    path('book_custom_trip/<str:pk>/select_car', views.car_list, name = 'agency-select-trip-car')
 ]

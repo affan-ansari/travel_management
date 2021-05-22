@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields import PositiveBigIntegerField
 from django.db.models.fields.related import ManyToManyField
 from django.urls import reverse
 from PIL import Image
@@ -16,3 +17,58 @@ class EMPLOYEE(models.Model):
     #hourly_rate 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+class TRIP(models.Model):
+    CITIES = (
+        ('ISLAMABAD', 'ISLAMABAD'),
+        ('MURREE', 'MURREE'),
+        ('NATHIA GALI', 'NATHIA GALI'),
+        ('NARAN KAGHAN', 'NARAN KAGHAN'),
+        ('KASHMIR', 'KASHMIR'),
+        ('SAWAT', 'SAWAT'),
+    )
+    source = models.CharField(max_length=100, choices=CITIES)
+    destination = models.CharField(max_length=100, choices=CITIES)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    is_custom=models.BooleanField(default=False)
+
+    def __str__(self):
+        return 'Trip ' + str(self.id) + ' :' + self.source + ' - ' + self.destination
+
+class FARE(models.Model):
+    TYPE_CHOICES = (
+        ('Economy','ECONOMY'),
+        ('Business','BUSINESS'),
+        ('Luxury','LUXURY'),
+    )
+    car_type = models.CharField(max_length=100, choices=TYPE_CHOICES)
+    car_fare = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.car_type + ': Rs' + str(self.car_fare) 
+
+class CAR(models.Model):
+    reg_no = models.CharField(max_length=25,primary_key=True, default="")
+    make = models.CharField(max_length=100)
+    model = models.PositiveIntegerField()
+    seats = models.PositiveIntegerField()
+    color = models.CharField(max_length=100)
+    image = models.ImageField(default='default_car.png', upload_to='car_pics')
+    fare = models.ForeignKey(FARE,null=True,on_delete=models.PROTECT)
+    available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.reg_no) + ': ' + self.make + ' ' + str(self.model)
+
+class BOOKING(models.Model):
+    trip = models.OneToOneField(TRIP,on_delete=models.PROTECT)
+    allocated_car = models.ForeignKey(CAR,null=True,on_delete=models.PROTECT)
+    customer = models.ForeignKey(User,on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.id) + ': ' + self.trip.source + '-' + self.trip.destination
+
+class TICKET(models.Model):
+    booking = models.ForeignKey(BOOKING,null=True,on_delete=models.PROTECT)
+    seat_no = models.PositiveIntegerField(default=0)

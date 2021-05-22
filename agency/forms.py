@@ -1,5 +1,6 @@
 from django import forms
-from .models import EMPLOYEE
+from django.db.models import fields
+from .models import EMPLOYEE, TRIP
 
 
 class RegisterDriverForm(forms.ModelForm):
@@ -17,3 +18,10 @@ class EmployeeUpdateForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
         fields = '__all__'
+        exclude = ['available']
+
+class BookCustomTripForm(forms.ModelForm):
+    class Meta:
+        model = TRIP
+        fields = '__all__'
+        exclude = ['is_custom']
