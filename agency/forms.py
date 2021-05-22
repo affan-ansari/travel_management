@@ -1,8 +1,18 @@
 from django import forms
-from .models import EMPLOYEE
+from .models import EMPLOYEE, HOTEL
+
+class AddHotelForm(forms.ModelForm):
+    class Meta:
+        model = HOTEL
+        fields = '__all__'
+
+class HotelUpdateForm(forms.ModelForm):
+    class Meta:
+        model = HOTEL
+        fields = '__all__'
 
 
-class RegisterDriverForm(forms.ModelForm):
+class RegisterEmployeeForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
         fields = '__all__'
@@ -17,3 +27,4 @@ class EmployeeUpdateForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
         fields = '__all__'
+
