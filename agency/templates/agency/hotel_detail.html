@@ -1,0 +1,19 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h2><a href="#">{{ hotel.name }}</a></h2>
+            <h4>{{ hotel.city }}</h4>
+            <h4>{{ hotel.address }}</h4>
+            <h4>{{ hotel.charges }}</h4>
+            {% if user.is_superuser %}
+            <h1>{{ object.id }}</h1>
+                <div>
+                    <a class="btn btn-primary" href="{% url 'agency-hotel-form' object.id %}"> Update </a>
+                </div>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock content %}

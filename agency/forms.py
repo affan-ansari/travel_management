@@ -1,9 +1,19 @@
 from django import forms
 from django.db.models import fields
-from .models import EMPLOYEE, TRIP
+from .models import EMPLOYEE, TRIP,HOTEL
+
+class AddHotelForm(forms.ModelForm):
+    class Meta:
+        model = HOTEL
+        fields = '__all__'
+
+class HotelUpdateForm(forms.ModelForm):
+    class Meta:
+        model = HOTEL
+        fields = '__all__'
 
 
-class RegisterDriverForm(forms.ModelForm):
+class RegisterEmployeeForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
         fields = '__all__'

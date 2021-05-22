@@ -1,9 +1,15 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DetailView
-from .models import EMPLOYEE
+from django.views.generic import (
+    ListView,
+    DetailView,
+    UpdateView,
+    DeleteView
+)
+from .models import EMPLOYEE,HOTEL
 from .business_logic.agency import Agency
 from . import forms
 
@@ -12,12 +18,30 @@ controller = Agency()
 class EmployeeDetailView(DetailView):
      model = EMPLOYEE
 
+class HotelDetailView(DetailView):
+     model = HOTEL
+
+
+class HotelUpdateView(LoginRequiredMixin, UpdateView):
+    model = HOTEL
+    fields = '__all__'
+
+
+
+
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def EmployeesView(request):
     employees = controller.employees.get_employees(request.user)
     context = {'employees':employees}
     return render(request, 'agency/employee_list.html',context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def HotelsView(request):
+    hotels = controller.hotels.get_hotels(request.user)
+    context = {'hotels':hotels}
+    return render(request, 'agency/hotel_list.html',context)
 
 # Create your views here.
 # Function Views
@@ -29,9 +53,9 @@ def home(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def register_driver(request):
+def register_employee(request):
     if request.method == 'POST':
-        form = forms.RegisterDriverForm(request.POST)
+        form = forms.RegisterEmployeeForm(request.POST)
         if form.is_valid():
             CNIC = form.cleaned_data.get("CNIC")
             first_name = form.cleaned_data.get("first_name")
@@ -42,11 +66,30 @@ def register_driver(request):
             #hourly_rate = form.cleaned_data.get("hourly_rate")
 
             controller.add_employee(CNIC,first_name,last_name,email,contact_number,address)
-            messages.success(request, f'Driver added successfully!')
+            messages.success(request, f'Employee added successfully!')
             return redirect('agency-register-employee')
     else:
-        form = forms.RegisterDriverForm()
+        form = forms.RegisterEmployeeForm()
     return render(request,'agency/register_employee.html',{'form': form})
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def add_hotel(request):
+    if request.method == 'POST':
+        form = forms.AddHotelForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get("name")
+            city = form.cleaned_data.get("city")
+            address = form.cleaned_data.get("address")
+            image = form.cleaned_data.get("image")
+            charges = form.cleaned_data.get("charges")
+            controller.add_hotel(name,city,address,image,charges)
+            messages.success(request, f'Hotel added successfully!')
+            return redirect('agency-add-hotel')
+    else:
+        form = forms.AddHotelForm()
+    return render(request,'agency/add_hotel.html',{'form': form})
+
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
