@@ -19,22 +19,25 @@ class EMPLOYEE(models.Model):
         return self.first_name + ' ' + self.last_name
 
 class TRIP(models.Model):
-    CITIES = (
-        ('ISLAMABAD', 'ISLAMABAD'),
+    DEST_CITIES = (
         ('MURREE', 'MURREE'),
         ('NATHIA GALI', 'NATHIA GALI'),
         ('NARAN KAGHAN', 'NARAN KAGHAN'),
         ('KASHMIR', 'KASHMIR'),
         ('SAWAT', 'SAWAT'),
     )
-    source = models.CharField(max_length=100, choices=CITIES)
-    destination = models.CharField(max_length=100, choices=CITIES)
+    SOURCE_CITIES = (
+        ('ISLAMABAD', 'ISLAMABAD'),
+        ('RAWALPINDI', 'RAWALPINDI'),
+    )
+    source = models.CharField(max_length=100, choices=SOURCE_CITIES)
+    destination = models.CharField(max_length=100, choices=DEST_CITIES)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    is_custom=models.BooleanField(default=False)
 
     def __str__(self):
         return 'Trip ' + str(self.id) + ' :' + self.source + ' - ' + self.destination
+
 
 class HOTEL_FARE(models.Model):
     type_choice = (
@@ -72,8 +75,33 @@ class HOTEL(models.Model):
         return reverse('hotel-detail', kwargs={'pk': self.id})
 
     def __str__(self):
-        return self.name
+        return f'{self.name} [{self.city}]'
 
+class FIXED_TRIP(models.Model):
+    DEST_CITIES = (
+        ('MURREE', 'MURREE'),
+        ('NATHIA GALI', 'NATHIA GALI'),
+        ('NARAN KAGHAN', 'NARAN KAGHAN'),
+        ('KASHMIR', 'KASHMIR'),
+        ('SAWAT', 'SAWAT'),
+    )
+    SOURCE_CITIES = (
+        ('ISLAMABAD', 'ISLAMABAD'),
+        ('RAWALPINDI', 'RAWALPINDI'),
+    )
+    source = models.CharField(max_length=100, choices=SOURCE_CITIES)
+    destination = models.CharField(max_length=100, choices=DEST_CITIES)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
+    available_seats = models.PositiveIntegerField(default=0)
+    price = models.PositiveBigIntegerField(default=0)
+
+    def __str__(self):
+        return 'Trip ' + str(self.id) + ' :' + self.source + ' - ' + self.destination
+    
+    class Meta:
+        verbose_name="Fixed Trip"
 
 class FARE(models.Model):
     TYPE_CHOICES = (
@@ -111,7 +139,6 @@ class BOOKING(models.Model):
 
 class FIXED_BOOKING(models.Model):
     trip = models.OneToOneField(TRIP,on_delete=models.PROTECT)
-    allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
     customer = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):

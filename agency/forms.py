@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import fields
-from .models import EMPLOYEE, TRIP,HOTEL
+from .models import EMPLOYEE, TRIP,HOTEL, FIXED_TRIP
 
 class AddHotelForm(forms.ModelForm):
     class Meta:
@@ -35,3 +35,8 @@ class BookCustomTripForm(forms.ModelForm):
         model = TRIP
         fields = '__all__'
         exclude = ['is_custom']
+
+class BookFixedTripForm(forms.ModelForm):
+    class Meta:
+        model = FIXED_TRIP
+        fields = '__all__'

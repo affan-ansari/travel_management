@@ -16,8 +16,9 @@ urlpatterns = [
     path('book_custom_trip/', views.book_custom_trip,name = 'agency-book-custom-trip'),
     path('book_custom_trip/<str:pk>/select_car', views.select_car, name = 'agency-select-trip-car'),
     path('book_custom_trip/<str:trip_pk>/select_car/<str:car_pk>/select_hotel', views.select_hotel, name = 'agency-select-trip-hotel'),
-    path('book_custom_trip/<str:trip_pk>/select_car/<str:car_pk>/select_hotel/<str:hotel_pk>/booking', views.create_booking, name = 'agency-booking'),
+    path('book_custom_trip/<str:trip_pk>/select_car/<str:car_pk>/select_hotel/<str:hotel_pk>/booking', views.create_custom_booking, name = 'agency-custom-booking'),
     path('hotels',views.HotelsView,name='agency-hotel-list'),
     path('hotel/<int:pk>/hotel_form/', views.HotelUpdateView.as_view(), name='agency-hotel-form'),
     path('add_hotel', views.add_hotel, name='agency-add-hotel'),
+    path('employees_panel/add_fixed_trip', views.create_fixed_trip, name='agency-fixed-trip'),
 ]

@@ -24,6 +24,9 @@ class Agency:
         
     def add_custom_trip(self,source,destination,start_date,end_date):
         return self.trips.add_custom_trip(source,destination,start_date,end_date)
+    
+    def add_fixed_trip(self,source,destination,start_date,end_date,allocated_hotel,available_seats,price):
+        return self.trips.add_fixed_trip(source,destination,start_date,end_date,allocated_hotel,available_seats,price)
 
     def add_hotel(self,name,city,address,image,charges):
         self.hotels.add_hotel(name,city,address,image,charges)

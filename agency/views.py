@@ -2,7 +2,7 @@ from agency.business_logic.trip import Trip
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import (
     ListView,
@@ -40,7 +40,7 @@ def EmployeesView(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def HotelsView(request):
-    hotels = agency.hotels.get_hotels(request.user)
+    hotels = agency.hotels.get_hotels()
     context = {'hotels':hotels}
     return render(request, 'agency/hotel_list.html',context)
 
@@ -168,7 +168,12 @@ def book_custom_trip(request):
             start_date = form.cleaned_data.get("start_date")
             end_date = form.cleaned_data.get("end_date")
 
-            trip = agency.add_custom_trip(source,destination,start_date,end_date)
+            try:
+                trip = agency.add_custom_trip(source,destination,start_date,end_date)
+            except Exception as exc:
+                messages.warning(request,f'{exc}')
+                return redirect('agency-book-custom-trip')
+            
             messages.success(request, f'Trip added successfully!')
             return redirect('agency-select-trip-car',trip.id)
     else:
@@ -193,7 +198,7 @@ def select_hotel(request,trip_pk,car_pk):
     }
     return render(request, 'agency/select_hotel.html', context)
 
-def create_booking(request,trip_pk,car_pk,hotel_pk):
+def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
     selected_trip = agency.trips.get_trip(trip_pk)
     selected_car = agency.cars.get_car(car_pk)
     selected_hotel = None
@@ -210,3 +215,28 @@ def create_booking(request,trip_pk,car_pk,hotel_pk):
             'hotel': selected_hotel,
         }
         return render(request,'agency/create_booking.html', context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def create_fixed_trip(request):
+    if request.method == 'POST':
+        form = forms.BookFixedTripForm(request.POST)
+        if form.is_valid():
+            source = form.cleaned_data.get("source")
+            destination = form.cleaned_data.get("destination")
+            start_date = form.cleaned_data.get("start_date")
+            end_date = form.cleaned_data.get("end_date")
+            allocated_hotel = form.cleaned_data.get("allocated_hotel")
+            available_seats = form.cleaned_data.get("available_seats")
+            price = form.cleaned_data.get("price")
+            try:
+                trip = agency.add_fixed_trip(source,destination,start_date,end_date,allocated_hotel,available_seats,price)
+            except Exception as exc:
+                messages.warning(request,f'{exc}')
+                return redirect('agency-fixed-trip')
+            
+            messages.success(request, f'Trip added successfully!')
+            return redirect('agency-fixed-trip')
+    else:
+        form = forms.BookFixedTripForm()
+    return render(request,'agency/create_fixed_trip.html',{'form': form})

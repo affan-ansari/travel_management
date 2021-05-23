@@ -11,7 +11,7 @@
             <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
             <h2>{{ hotel.name }}</a></h2>
             <h4>{{ hotel.charges }}</h4>
-            <a class="btn btn-primary" href="{% url 'agency-booking' trip_pk car_pk hotel.id %}"> Select Hotel </a>
+            <a class="btn btn-primary" href="{% url 'agency-custom-booking' trip_pk car_pk hotel.id %}"> Select Hotel </a>
         </div>
     </div>
     {% endfor %}
