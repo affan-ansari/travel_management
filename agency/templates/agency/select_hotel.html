@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="col-md-8">
-        <a class="btn btn-danger" href="#"> Skip </a>
+        <a class="btn btn-danger" href="{% url 'agency-custom-booking' trip_pk car_pk -1 %}"> Skip </a>
     </div>
     <br>
     {% for hotel in hotels %}

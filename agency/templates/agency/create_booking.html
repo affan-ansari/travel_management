@@ -15,11 +15,13 @@
                     <h4>{{ car.model }}</h4>
                     <h5>Rs {{ car.fare.car_fare }} / day</h5>
                 </div>
-                <div class = "content-section">
-                    <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
-                    <h2>{{ hotel.name }}</a></h2>
-                    <h4>{{ hotel.charges }} / day</h4>
-                </div>
+                {% if hotel != None %}
+                    <div class = "content-section">
+                        <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
+                        <h2>{{ hotel.name }}</a></h2>
+                        <h4>{{ hotel.charges }} / day</h4>
+                    </div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit"> Make Payment</button>

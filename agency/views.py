@@ -202,8 +202,8 @@ def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
     selected_trip = agency.trips.get_trip(trip_pk)
     selected_car = agency.cars.get_car(car_pk)
     selected_hotel = None
-    # if hotel_pk != '-1':
-    selected_hotel = agency.hotels.get_hotel(hotel_pk)
+    if hotel_pk != '-1':
+        selected_hotel = agency.hotels.get_hotel(hotel_pk)
     if request.method == 'POST':
         agency.add_booking(selected_trip,selected_car,selected_hotel,request.user)
         messages.success(request, f'Trip Booked successfully!')
