@@ -14,7 +14,7 @@ from .models import EMPLOYEE,HOTEL
 from .business_logic.agency import Agency
 from . import forms
 
-controller = Agency()
+agency = Agency()
 
 class EmployeeDetailView(DetailView):
      model = EMPLOYEE
@@ -33,14 +33,14 @@ class HotelUpdateView(LoginRequiredMixin, UpdateView):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def EmployeesView(request):
-    employees = controller.employees.get_employees(request.user)
+    employees = agency.employees.get_employees(request.user)
     context = {'employees':employees}
     return render(request, 'agency/employee_list.html',context)
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def HotelsView(request):
-    hotels = controller.hotels.get_hotels(request.user)
+    hotels = agency.hotels.get_hotels(request.user)
     context = {'hotels':hotels}
     return render(request, 'agency/hotel_list.html',context)
 
@@ -66,7 +66,7 @@ def register_employee(request):
             address = form.cleaned_data.get("address")
             #hourly_rate = form.cleaned_data.get("hourly_rate")
 
-            controller.add_employee(CNIC,first_name,last_name,email,contact_number,address)
+            agency.add_employee(CNIC,first_name,last_name,email,contact_number,address)
             messages.success(request, f'Employee added successfully!')
             return redirect('agency-register-employee')
     else:
@@ -84,7 +84,7 @@ def add_hotel(request):
             address = form.cleaned_data.get("address")
             image = form.cleaned_data.get("image")
             charges = form.cleaned_data.get("charges")
-            controller.add_hotel(name,city,address,image,charges)
+            agency.add_hotel(name,city,address,image,charges)
             messages.success(request, f'Hotel added successfully!')
             return redirect('agency-add-hotel')
     else:
@@ -100,7 +100,7 @@ def search_employee(request):
         if search_form.is_valid():
             CNIC = search_form.cleaned_data["CNIC"]
             try:
-                searched_employee = controller.employees.get_employee(CNIC)
+                searched_employee = agency.employees.get_employee(CNIC)
                 messages.success(request, f'Employee found!')
                 return HttpResponseRedirect("employee/{CNIC}/".format(CNIC= searched_employee.CNIC))
             except Exception as exc:
@@ -113,7 +113,7 @@ def search_employee(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def update_employee(request,pk):
-    searched_employee = controller.employees.get_employee(pk)
+    searched_employee = agency.employees.get_employee(pk)
     if request.method == 'POST':
         update_form = forms.EmployeeUpdateForm(request.POST, instance=searched_employee)
         if update_form.is_valid():
@@ -124,7 +124,7 @@ def update_employee(request,pk):
             contact_number = update_form.cleaned_data.get("contact_number")
             address = update_form.cleaned_data.get("address")
 
-            controller.update_employee(CNIC,first_name,last_name,email,contact_number,address)
+            agency.update_employee(CNIC,first_name,last_name,email,contact_number,address)
             messages.success(request,f'Employee Updated Succuessfully')
             return redirect('agency-home')
     else:
@@ -139,7 +139,7 @@ def delete_employee(request):
         form = forms.SearchEmployeeForm(request.POST)
         if form.is_valid():
             CNIC = form.cleaned_data["CNIC"]
-            is_deleted = controller.delete_employee(CNIC)
+            is_deleted = agency.delete_employee(CNIC)
             if is_deleted == True:
                 messages.success(request, f'Employee deleted successfully!')
             else:
@@ -168,7 +168,7 @@ def book_custom_trip(request):
             start_date = form.cleaned_data.get("start_date")
             end_date = form.cleaned_data.get("end_date")
 
-            trip = controller.add_custom_trip(source,destination,start_date,end_date)
+            trip = agency.add_custom_trip(source,destination,start_date,end_date)
             messages.success(request, f'Trip added successfully!')
             return redirect('agency-select-trip-car',trip.id)
     else:
@@ -176,8 +176,8 @@ def book_custom_trip(request):
     return render(request,'agency/book_trip.html',{'form': form})
 
 def select_car(request,pk):
-    cars = controller.cars.get_cars()
-    trip = controller.trips.get_trip(pk)
+    cars = agency.cars.get_cars()
+    trip = agency.trips.get_trip(pk)
     context = {
         'cars': cars,
         'trip': trip
@@ -185,7 +185,7 @@ def select_car(request,pk):
     return render(request, 'agency/select_car.html', context)
 
 def select_hotel(request,trip_pk,car_pk):
-    hotels = controller.hotels.get_hotels()
+    hotels = agency.hotels.get_hotels()
     context = {
         'trip_pk': trip_pk,
         'car_pk': car_pk,
@@ -194,13 +194,13 @@ def select_hotel(request,trip_pk,car_pk):
     return render(request, 'agency/select_hotel.html', context)
 
 def create_booking(request,trip_pk,car_pk,hotel_pk):
-    selected_trip = controller.trips.get_trip(trip_pk)
-    selected_car = controller.cars.get_car(car_pk)
+    selected_trip = agency.trips.get_trip(trip_pk)
+    selected_car = agency.cars.get_car(car_pk)
     selected_hotel = None
     # if hotel_pk != '-1':
-    selected_hotel = controller.hotels.get_hotel(hotel_pk)
+    selected_hotel = agency.hotels.get_hotel(hotel_pk)
     if request.method == 'POST':
-        controller.add_booking(selected_trip,selected_car,selected_hotel,request.user)
+        agency.add_booking(selected_trip,selected_car,selected_hotel,request.user)
         messages.success(request, f'Trip Booked successfully!')
         return redirect('agency-home')
     else:
@@ -210,14 +210,3 @@ def create_booking(request,trip_pk,car_pk,hotel_pk):
             'hotel': selected_hotel,
         }
         return render(request,'agency/create_booking.html', context)
-
-
-
-
-
-
-def test_func(self):
-    if self.request.user.is_superuser():
-        return True
-    else:
-        return False
