@@ -48,9 +48,9 @@ class HOTEL_FARE(models.Model):
     hotel_type = models.CharField(max_length=100, choices=type_choice)
     hotel_fare = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return self.hotel_type + ': Rs' + str(self.hotel_fare)
+        return self.hotel_type + ': Rs ' + str(self.hotel_fare)
     class Meta:
-        verbose_name="HOTEL_FARE"
+        verbose_name="Hotel Fare"
 
 
 class HOTEL(models.Model):
@@ -70,6 +70,9 @@ class HOTEL(models.Model):
 
     def get_absolute_url(self):
         return reverse('hotel-detail', kwargs={'pk': self.id})
+
+    def __str__(self):
+        return self.name
 
 
 class FARE(models.Model):
@@ -100,6 +103,15 @@ class CAR(models.Model):
 class BOOKING(models.Model):
     trip = models.OneToOneField(TRIP,on_delete=models.PROTECT)
     allocated_car = models.ForeignKey(CAR,null=True,on_delete=models.PROTECT)
+    allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
+    customer = models.ForeignKey(User,on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.id) + ': ' + self.trip.source + '-' + self.trip.destination
+
+class FIXED_BOOKING(models.Model):
+    trip = models.OneToOneField(TRIP,on_delete=models.PROTECT)
+    allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
     customer = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):

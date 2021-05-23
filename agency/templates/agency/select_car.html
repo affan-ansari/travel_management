@@ -1,4 +1,3 @@
-
 {% extends "agency/base.html" %}
 {% load static %}
 {% block content %}
@@ -9,7 +8,7 @@
             <h2>{{ car.make }}</a></h2>
             <h4>{{ car.model }}</h4>
             <h5>${{ car.fare.car_fare }}</h5>
-            <a class="btn btn-primary" href="#"> Select Car </a>
+            <a class="btn btn-primary" href="{% url 'agency-select-trip-hotel' trip.id car.reg_no %}"> Select Car </a>
         </div>
     </div>
     {% endfor %}

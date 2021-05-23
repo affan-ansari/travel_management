@@ -1,3 +1,4 @@
+from agency.business_logic.booking_list import BookingList
 from agency.business_logic.car_list import CarList
 from .employee_list import EmployeeList
 from .trip_list import TripList
@@ -10,6 +11,7 @@ class Agency:
         self.trips = TripList()
         self.cars = CarList()
         self.hotels = HotelList()
+        self.bookings = BookingList()
     
     def add_employee(self,CNIC,first_name,last_name,email,contact_number,address):
         self.employees.add_employee(CNIC,first_name,last_name,email,contact_number,address)
@@ -22,7 +24,9 @@ class Agency:
         
     def add_custom_trip(self,source,destination,start_date,end_date):
         return self.trips.add_custom_trip(source,destination,start_date,end_date)
-        
 
     def add_hotel(self,name,city,address,image,charges):
         self.hotels.add_hotel(name,city,address,image,charges)
+    
+    def add_booking(self,trip,allocated_car,allocated_hotel,customer):
+        self.bookings.add_booking(trip,allocated_car,allocated_hotel,customer)

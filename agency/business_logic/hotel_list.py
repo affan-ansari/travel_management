@@ -11,7 +11,7 @@ class HotelList:
         new_hotel = Hotel(name,city,address,image,charges) # Returns HOTEL model class object
         new_hotel.save()
     
-    def get_hotels(self,user):
+    def get_hotels(self):
         hotels = HOTEL.objects.all()
         return hotels
     

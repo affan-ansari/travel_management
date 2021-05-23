@@ -16,4 +16,14 @@ class CarList:
     def get_cars(self):
         cars = CAR.objects.filter(available=True)
         return cars
+    
+    def get_car(self,reg_no):
+        try:
+            searched_car = CAR.objects.get(reg_no=reg_no)
+            if searched_car.available == False:
+                raise Exception(f'{reg_no} was deleted!')
+            else:
+                return searched_car
+        except ObjectDoesNotExist:
+            raise Exception(f'{reg_no} does not exist!')
 

@@ -1,3 +1,4 @@
+from agency.business_logic.trip import Trip
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -174,17 +175,44 @@ def book_custom_trip(request):
         form = forms.BookCustomTripForm()
     return render(request,'agency/book_trip.html',{'form': form})
 
-def car_list(request,pk):
+def select_car(request,pk):
+    cars = controller.cars.get_cars()
+    trip = controller.trips.get_trip(pk)
+    context = {
+        'cars': cars,
+        'trip': trip
+    }
+    return render(request, 'agency/select_car.html', context)
+
+def select_hotel(request,trip_pk,car_pk):
+    hotels = controller.hotels.get_hotels()
+    context = {
+        'trip_pk': trip_pk,
+        'car_pk': car_pk,
+        'hotels': hotels
+    }
+    return render(request, 'agency/select_hotel.html', context)
+
+def create_booking(request,trip_pk,car_pk,hotel_pk):
+    selected_trip = controller.trips.get_trip(trip_pk)
+    selected_car = controller.cars.get_car(car_pk)
+    selected_hotel = None
+    # if hotel_pk != '-1':
+    selected_hotel = controller.hotels.get_hotel(hotel_pk)
     if request.method == 'POST':
-        pass
+        controller.add_booking(selected_trip,selected_car,selected_hotel,request.user)
+        messages.success(request, f'Trip Booked successfully!')
+        return redirect('agency-home')
     else:
-        cars = controller.cars.get_cars()
-        trip = controller.trips.get_trip(pk)
         context = {
-            'cars': cars,
-            'trip': trip
+            'car': selected_car,
+            'trip': selected_trip,
+            'hotel': selected_hotel,
         }
-        return render(request, 'agency/car_list.html', context)
+        return render(request,'agency/create_booking.html', context)
+
+
+
 
 
 

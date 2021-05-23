@@ -1,0 +1,18 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-8">
+        <a class="btn btn-danger" href="#"> Skip </a>
+    </div>
+    <br>
+    {% for hotel in hotels %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
+            <h2>{{ hotel.name }}</a></h2>
+            <h4>{{ hotel.charges }}</h4>
+            <a class="btn btn-primary" href="{% url 'agency-booking' trip_pk car_pk hotel.id %}"> Select Hotel </a>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}
