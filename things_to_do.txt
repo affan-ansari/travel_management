@@ -1,8 +1,8 @@
-source only isb rwp no isb rwp in dest
-date checks in book trip
 Skip hotel
 cancel booking
-add price somewhere
-handle seats
-available seats in fixed trips [TRIP MODEL]
-fixed trip seperate booking class
+
+Bhai jee
+delelte hotel
+list view of fixed trips
+detail view of fixed trips
+change name of maanage employees to employees panel everywheres
