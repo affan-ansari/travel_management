@@ -4,6 +4,7 @@
     {% for hotel in hotels %}
     <div class="col-md-8">
         <div class = "content-section">
+            <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
             <h2><a href="{% url 'hotel-detail' hotel.id%}">{{ hotel.name }}</a></h2>
             <h4>{{ hotel.city}}</h4>
         </div>

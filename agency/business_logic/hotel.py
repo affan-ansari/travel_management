@@ -6,6 +6,7 @@ class Hotel:
             city = city,
             address = address,
             image = image,
-            charges = charges
+            charges = charges,
+            available = True
         )
         return new_hotel

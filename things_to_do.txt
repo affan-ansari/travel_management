@@ -2,11 +2,10 @@ Skip hotel[Done]
 cancel booking
 
 Bhai jee
-delelte hotel [available = false]
-hotel list [print only if available == true]
+---------------------delelte hotel [available = false]
+--------------------hotel list [print only if available == true]
 correct prices in custom trip
+----------------change name of maanage employees to employees panel everywheres
 
 list view of fixed trips
 detail view of fixed trips
-change name of maanage employees to employees panel everywheres
-message.warning("Date Format: YYYY-MM-DD)

@@ -31,5 +31,8 @@ class Agency:
     def add_hotel(self,name,city,address,image,charges):
         self.hotels.add_hotel(name,city,address,image,charges)
     
+    def delete_hotel(self,hotel_id):
+        self.hotels.delete_hotel(hotel_id)
+    
     def add_booking(self,trip,allocated_car,allocated_hotel,customer):
         self.bookings.add_booking(trip,allocated_car,allocated_hotel,customer)

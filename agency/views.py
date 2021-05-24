@@ -25,7 +25,8 @@ class HotelDetailView(DetailView):
 
 class HotelUpdateView(LoginRequiredMixin, UpdateView):
     model = HOTEL
-    fields = '__all__'
+    fields = ['name','city', 'address', 'image','charges']
+    
 
 
 
@@ -146,12 +147,25 @@ def delete_employee(request):
         form = forms.SearchEmployeeForm()
     return render(request,'agency/delete_employee.html',{'form': form})
 
+def delete_hotel(request,pk):
+    hotel = agency.hotels.get_hotel(pk)
+    if request.method == 'POST':
+        try:
+            agency.delete_hotel(pk)
+            messages.success(request, f'Hotel deleted successfully!')
+            return redirect('agency-hotel-list')
+        except Exception as exc:
+            messages.warning(request,f'{exc}')
+            return redirect('agency-hotel-list')
+    else:
+        return render(request, 'agency/delete_hotel.html',{'hotel': hotel})
+
 
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
-def manage_employee(request):
-    return render(request, 'agency/manage_employee.html')
+def employee_panel(request):
+    return render(request, 'agency/employee_panel.html')
 
 
 @login_required

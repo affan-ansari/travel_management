@@ -6,20 +6,24 @@ class AddHotelForm(forms.ModelForm):
     class Meta:
         model = HOTEL
         fields = '__all__'
+        exclude = ['available']
 
 class HotelUpdateForm(forms.ModelForm):
     class Meta:
         model = HOTEL
         fields = '__all__'
+        exclude = ['available']
 
 
 class RegisterEmployeeForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
         fields = '__all__'
+        exclude = ['available']
 
 class SearchEmployeeForm(forms.Form):
     CNIC = forms.CharField(label="CNIC", max_length=15)
+
 
 class EmployeeUpdateForm(forms.ModelForm):
     CNIC =  forms.CharField(widget=forms.TextInput(attrs={'readonly':'True'}))

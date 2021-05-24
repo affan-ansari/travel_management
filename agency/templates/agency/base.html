@@ -36,7 +36,7 @@
                             <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                             <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
                             {% if user.is_superuser %}
-                                <a class="nav-item nav-link" href="{% url 'agency-manage-employee' %}">Employees Panel</a>
+                                <a class="nav-item nav-link" href="{% url 'agency-employee-panel' %}">Employees Panel</a>
                             {% endif %}
                         {% else %}
                             <a class="nav-item nav-link" href="{% url 'login' %}">Log in</a>

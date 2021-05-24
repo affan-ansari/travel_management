@@ -71,6 +71,7 @@ class HOTEL(models.Model):
     address = models.CharField(max_length=100)
     image = models.ImageField(default='default_hotel.jpeg', upload_to='hotel_pics')
     charges = models.ForeignKey(HOTEL_FARE,null=True,on_delete=models.PROTECT)
+    available=models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return reverse('hotel-detail', kwargs={'pk': self.id})
