@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.enums import Choices
 from django.db.models.fields import PositiveBigIntegerField
 from django.db.models.fields.related import ManyToManyField
 from django.urls import reverse
@@ -89,12 +90,18 @@ class FIXED_TRIP(models.Model):
         ('ISLAMABAD', 'ISLAMABAD'),
         ('RAWALPINDI', 'RAWALPINDI'),
     )
+    SEAT_CHOICES = (
+        (25, 25),
+        (50, 50),
+        (75, 75),
+        (100, 100)
+    )
     source = models.CharField(max_length=100, choices=SOURCE_CITIES)
     destination = models.CharField(max_length=100, choices=DEST_CITIES)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
-    available_seats = models.PositiveIntegerField(default=0)
+    available_seats = models.PositiveIntegerField(choices=SEAT_CHOICES)
     price = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):

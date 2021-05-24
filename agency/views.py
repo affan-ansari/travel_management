@@ -47,10 +47,7 @@ def HotelsView(request):
 # Create your views here.
 # Function Views
 def home(request):
-    context = {
-        'cars': ['C1','C2','C3']
-    }
-    return render(request, 'agency/home.html', context)
+    return render(request, 'agency/home.html')
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -160,6 +157,7 @@ def manage_employee(request):
 @login_required
 @user_passes_test(lambda u: u.is_superuser == False)
 def book_custom_trip(request):
+    messages.info(request, f'Date Format: YYYY-MM-DD')
     if request.method == 'POST':
         form = forms.BookCustomTripForm(request.POST)
         if form.is_valid():
@@ -219,6 +217,7 @@ def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
 def create_fixed_trip(request):
+    messages.info(request, f'Date Format: YYYY-MM-DD')
     if request.method == 'POST':
         form = forms.BookFixedTripForm(request.POST)
         if form.is_valid():
