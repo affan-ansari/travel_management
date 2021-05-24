@@ -75,7 +75,7 @@ def register_employee(request):
 @user_passes_test(lambda u: u.is_superuser)
 def add_hotel(request):
     if request.method == 'POST':
-        form = forms.AddHotelForm(request.POST)
+        form = forms.AddHotelForm(request.POST, request.FILES)
         if form.is_valid():
             name = form.cleaned_data.get("name")
             city = form.cleaned_data.get("city")
