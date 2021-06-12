@@ -28,6 +28,9 @@
                         <a class="nav-item nav-link" href="#">About</a>
                         {% if user.is_superuser == False %}
                             <a class="nav-item nav-link" href="{% url 'agency-book-custom-trip' %}">Book Trip</a>
+                            {% if user.is_authenticated %}
+                                <a class="nav-item nav-link" href="{% url 'agency-invoices-panel' %}">My Invoices</a>
+                            {% endif %}
                         {% endif %}
                     </div>
                     <!-- Navbar Right Side -->

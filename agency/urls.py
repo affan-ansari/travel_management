@@ -7,6 +7,7 @@ urlpatterns = [
 
     path('search_employee',views.search_employee,name='agency-search-employee'),
     path('employee_panel', views.employee_panel, name='agency-employee-panel'),
+    path('invoices_panel', views.invoices_panel, name='agency-invoices-panel'),
     path('register_employee', views.register_employee, name='agency-register-employee'),
     path('employee/<str:pk>/update_employee/', views.update_employee, name='agency-update-employee'),
     path('employee/<str:pk>/', views.EmployeeDetailView.as_view(), name='employee-detail'),
@@ -34,5 +35,7 @@ urlpatterns = [
     path('invoice/<int:pk>/payment', views.make_payment, name='agency-make-payment'),
     path('fixed_invoice/<int:pk>/', views.FixedInvoiceDetailView.as_view(), name='fixed-invoice-detail'),
     path('fixed_invoices', views.FixedInvoiceView, name='agency-fixed-invoice-list'),
+    path('fixed_invoices_paid', views.FixedInvoiceView_paid, name='agency-fixed-invoice-list-paid'),
+    path('fixed_invoices_unpaid', views.FixedInvoiceView_unpaid, name='agency-fixed-invoice-list-unpaid'),
     path('fixed_invoice/<int:pk>/payment', views.make_payment_fixed_trip, name='agency-make-payment-fixed-trip'),
 ]

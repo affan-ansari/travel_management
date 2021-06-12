@@ -42,4 +42,15 @@
             </ul>
         </div>
     </div>
+
+    <div class="col-md-16">
+        <div class="content-section">
+            <h3>Manage Invoices of Fixed Trips</h3>
+            <ul class="list-group">
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list' %}" role="button">View Fixed Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list-paid' %}" role="button">View Paid Fixed Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list-unpaid' %}" role="button">View Non-Paid Fixed Invoices</a>
+            </ul>
+        </div>
+    </div>
 {% endblock content %}

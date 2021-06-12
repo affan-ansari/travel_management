@@ -88,6 +88,18 @@ def InvoiceView_unpaid(request):
     return render(request, 'agency/invoice_list.html',context)
 
 @login_required
+def FixedInvoiceView_paid(request):
+    invoices = agency.invoices.get_fixed_invoices_paid(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/invoice_list.html',context)
+
+@login_required
+def FixedInvoiceView_unpaid(request):
+    invoices = agency.invoices.get_fixed_invoices_unpaid(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/invoice_list.html',context)
+
+@login_required
 @user_passes_test(lambda u: u.is_superuser)
 def make_payment(request, pk):
     invoice = agency.invoices.get_invoice(pk)
@@ -251,6 +263,10 @@ def delete_hotel(request,pk):
 @user_passes_test(lambda u: u.is_superuser)
 def employee_panel(request):
     return render(request, 'agency/employee_panel.html')
+
+@login_required
+def invoices_panel(request):
+    return render(request, 'agency/invoices_panel.html')
 
 
 @login_required

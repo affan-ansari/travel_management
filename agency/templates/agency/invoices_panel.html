@@ -1,0 +1,25 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-16">
+        <div class="content-section">
+            <h3>Custom Trips Invoices</h3>
+            <ul class="list-group">
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-invoice-list' %}" role="button">View All Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-invoice-list-paid' %}" role="button">View Paid Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-invoice-list-unpaid' %}" role="button">View Non-Paid Invoices</a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-16">
+        <div class="content-section">
+            <h3>Fixed Trips Invoices</h3>
+            <ul class="list-group">
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list' %}" role="button">View Fixed Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list-paid' %}" role="button">View Paid Fixed Invoices</a>
+                <a class="btn btn-primary btn-lg btn-block" href="{% url 'agency-fixed-invoice-list-unpaid' %}" role="button">View Non-Paid Fixed Invoices</a>
+            </ul>
+        </div>
+    </div>
+{% endblock content %}
