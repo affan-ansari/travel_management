@@ -24,8 +24,8 @@
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'agency-home' %}">Home</a>
+                        <a class="nav-item nav-link" href="{% url 'agency-browse-fixed-trips' %}">Browse</a>
                         <a class="nav-item nav-link" href="#">About</a>
-                        <a class="nav-item nav-link" href="#">Browse</a>
                         {% if user.is_superuser == False %}
                             <a class="nav-item nav-link" href="{% url 'agency-book-custom-trip' %}">Book Trip</a>
                         {% endif %}

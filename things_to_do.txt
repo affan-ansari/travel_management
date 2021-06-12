@@ -1,11 +1,8 @@
-Skip hotel[Done]
-cancel booking
-
-Bhai jee
----------------------delelte hotel [available = false]
---------------------hotel list [print only if available == true]
-correct prices in custom trip
-----------------change name of maanage employees to employees panel everywheres
-
-list view of fixed trips
-detail view of fixed trips
+create detail page of trips
+link trips to their detail in browse trips
+in manage invoices make 2 buttons:
+    view invoices
+    view non paid invoices
+    
+show fixed trips on home page
+fix view hotels page (add more info)

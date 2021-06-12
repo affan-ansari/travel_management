@@ -10,17 +10,21 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import EMPLOYEE,HOTEL
+from .models import EMPLOYEE,HOTEL, INVOICE
 from .business_logic.agency import Agency
 from . import forms
+from .filters import TripFilter
 
 agency = Agency()
 
 class EmployeeDetailView(DetailView):
-     model = EMPLOYEE
+    model = EMPLOYEE
 
 class HotelDetailView(DetailView):
-     model = HOTEL
+    model = HOTEL
+
+class InvoiceDetailView(DetailView):
+    model = INVOICE
 
 
 class HotelUpdateView(LoginRequiredMixin, UpdateView):
@@ -45,8 +49,42 @@ def HotelsView(request):
     context = {'hotels':hotels}
     return render(request, 'agency/hotel_list.html',context)
 
-# Create your views here.
-# Function Views
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def TripsView(request):
+    trips = agency.trips.get_fixed_trips()
+    context = {'trips':trips}
+    return render(request, 'agency/trip_list.html',context)
+
+@login_required
+def InvoiceView(request):
+    invoices = agency.invoices.get_invoices(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/invoice_list.html',context)
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def make_payment(request, pk):
+    invoice = agency.invoices.get_invoice(pk)
+    if request.method == 'POST':
+        form = forms.PaymentForm(request.POST)
+        if form.is_valid():
+            payment_date = form.cleaned_data.get("payment_date")
+            paid_amount = form.cleaned_data.get("paid_amount")
+            try:
+                agency.make_payment(payment_date,paid_amount,invoice.id)
+                messages.success(request, "Payment Successfull")
+                return redirect('invoice-detail',invoice.id)
+            except Exception as exc:
+                messages.warning(request, f'{exc}')
+                return redirect('invoice-detail',invoice.id)
+        else:
+            return redirect('agency-make-payment',invoice.id)
+    else:
+        form = forms.PaymentForm()
+        return render(request,'agency/make_payment.html',{'form': form, 'invoice': invoice})
+
+
 def home(request):
     return render(request, 'agency/home.html')
 
@@ -217,9 +255,14 @@ def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
     if hotel_pk != '-1':
         selected_hotel = agency.hotels.get_hotel(hotel_pk)
     if request.method == 'POST':
-        agency.add_booking(selected_trip,selected_car,selected_hotel,request.user)
-        messages.success(request, f'Trip Booked successfully!')
-        return redirect('agency-home')
+        try:
+            new_booking = agency.add_booking(selected_trip,selected_car,selected_hotel,request.user)
+            new_invoice = agency.add_invoice(new_booking)
+            messages.success(request, f'Trip Booked successfully!')
+            return redirect('invoice-detail', new_invoice.id) # REDIRECT TO INVOICE DETAIL
+        except Exception as exc:
+            messages.warning(request,f'{exc}')
+            return redirect('agency-home')
     else:
         context = {
             'car': selected_car,
@@ -253,3 +296,20 @@ def create_fixed_trip(request):
     else:
         form = forms.BookFixedTripForm()
     return render(request,'agency/create_fixed_trip.html',{'form': form})
+
+def browse_fixed_trips(request):
+        trips =  agency.trips.get_fixed_trips()
+        if request.method == 'POST':
+            trip_filter = TripFilter(request.POST,queryset = trips) # GETTING DATA FROM FORM
+            filtered_trips = trip_filter.qs
+            context = {
+                'trips': filtered_trips
+            }
+            return render(request,'agency/browse_trips.html',context)
+        else:
+            trip_filter = TripFilter()
+            context = {
+                'trip_filter': trip_filter,
+                'trips': trips
+            }
+            return render(request,'agency/browse_trips.html',context)

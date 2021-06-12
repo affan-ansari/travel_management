@@ -3,6 +3,7 @@ from agency.business_logic.car_list import CarList
 from .employee_list import EmployeeList
 from .trip_list import TripList
 from .hotel_list import HotelList
+from .invoice_list import InvoiceList
 from django.utils import timezone
 
 class Agency:
@@ -12,6 +13,7 @@ class Agency:
         self.cars = CarList()
         self.hotels = HotelList()
         self.bookings = BookingList()
+        self.invoices = InvoiceList()
     
     def add_employee(self,CNIC,first_name,last_name,email,contact_number,address):
         self.employees.add_employee(CNIC,first_name,last_name,email,contact_number,address)
@@ -35,4 +37,10 @@ class Agency:
         self.hotels.delete_hotel(hotel_id)
     
     def add_booking(self,trip,allocated_car,allocated_hotel,customer):
-        self.bookings.add_booking(trip,allocated_car,allocated_hotel,customer)
+        return self.bookings.add_booking(trip,allocated_car,allocated_hotel,customer)
+    
+    def add_invoice(self, booking):
+        return self.invoices.add_invoice(booking)
+    
+    def make_payment(self, payment_date, paid_amount, invoice_pk):
+        self.invoices.make_payment(payment_date, paid_amount, invoice_pk)

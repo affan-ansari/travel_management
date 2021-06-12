@@ -6,7 +6,7 @@ urlpatterns = [
 
 
     path('search_employee',views.search_employee,name='agency-search-employee'),
-    path('employee-panel', views.employee_panel, name='agency-employee-panel'),
+    path('employee_panel', views.employee_panel, name='agency-employee-panel'),
     path('register_employee', views.register_employee, name='agency-register-employee'),
     path('employee/<str:pk>/update_employee/', views.update_employee, name='agency-update-employee'),
     path('employee/<str:pk>/', views.EmployeeDetailView.as_view(), name='employee-detail'),
@@ -20,6 +20,11 @@ urlpatterns = [
     path('hotels',views.HotelsView,name='agency-hotel-list'),
     path('hotel/<int:pk>/hotel_form/', views.HotelUpdateView.as_view(), name='agency-hotel-form'),
     path('add_hotel', views.add_hotel, name='agency-add-hotel'),
+    path('employees_panel/fixed_trips',views.TripsView,name='agency-fixed-trips-list'),
     path('employees_panel/add_fixed_trip', views.create_fixed_trip, name='agency-fixed-trip'),
+    path('browse_fixed_trips', views.browse_fixed_trips, name='agency-browse-fixed-trips'),
     path('delete_hotel/<int:pk>', views.delete_hotel, name='agency-delete-hotel'),
+    path('invoice/<int:pk>/', views.InvoiceDetailView.as_view(), name='invoice-detail'),
+    path('invoices', views.InvoiceView, name='agency-invoice-list'),
+    path('invoice/<int:pk>/payment', views.make_payment, name='agency-make-payment'),
 ]

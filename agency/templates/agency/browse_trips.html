@@ -1,0 +1,31 @@
+{% extends "agency/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+    {% if trip_filter %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4" > Filter Trips </legend>
+                    {{ trip_filter.form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" name="search"> Filter </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+    {% for trip in trips %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h3><a href="#">Trip: {{ trip.id }}</a></h3>
+            <h6> {{ trip.source }} to {{ trip.destination }} </h6>
+            <h6> {{ trip.start_date }} to {{ trip.end_date }}<br> </h6>
+            <h6> Seats Available {{ trip.available_seats }} </h6>
+            <h6> Rs {{ trip.price }} </h6>
+        </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

@@ -71,7 +71,7 @@ class HOTEL(models.Model):
     address = models.CharField(max_length=100)
     image = models.ImageField(default='default_hotel.jpeg', upload_to='hotel_pics')
     charges = models.ForeignKey(HOTEL_FARE,null=True,on_delete=models.PROTECT)
-    available=models.BooleanField(default=True)
+    available = models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return reverse('hotel-detail', kwargs={'pk': self.id})
@@ -104,6 +104,7 @@ class FIXED_TRIP(models.Model):
     allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
     available_seats = models.PositiveIntegerField(choices=SEAT_CHOICES)
     price = models.PositiveBigIntegerField(default=0)
+    available = models.BooleanField(default=True) 
 
     def __str__(self):
         return 'Trip ' + str(self.id) + ' :' + self.source + ' - ' + self.destination
@@ -141,16 +142,29 @@ class BOOKING(models.Model):
     allocated_car = models.ForeignKey(CAR,null=True,on_delete=models.PROTECT)
     allocated_hotel = models.ForeignKey(HOTEL,null=True,on_delete=models.PROTECT)
     customer = models.ForeignKey(User,on_delete=models.PROTECT)
+    booking_date = models.DateTimeField()
 
     def __str__(self):
         return str(self.id) + ': ' + self.trip.source + '-' + self.trip.destination
 
+class INVOICE(models.Model):
+    booking = models.OneToOneField(BOOKING,on_delete=models.PROTECT)
+    total_charges = models.PositiveIntegerField()
+    status = models.BooleanField(default = False)
+    paid_amount = models.PositiveIntegerField(default = 0)
+    balance = models.PositiveIntegerField(default= 0)
+
 class FIXED_BOOKING(models.Model):
-    trip = models.OneToOneField(TRIP,on_delete=models.PROTECT)
+    trip = models.OneToOneField(FIXED_TRIP,on_delete=models.PROTECT)
     customer = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.id) + ': ' + self.trip.source + '-' + self.trip.destination
+
+class FIXED_INVOICE(models.Model):
+    booking = models.OneToOneField(BOOKING,on_delete=models.PROTECT)
+    total_charges = models.PositiveIntegerField()
+    status = models.BooleanField(default = False)
 
 class TICKET(models.Model):
     booking = models.ForeignKey(BOOKING,null=True,on_delete=models.PROTECT)

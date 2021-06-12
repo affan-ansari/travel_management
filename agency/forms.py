@@ -1,5 +1,6 @@
 from django import forms
 from django.db.models import fields
+from django.forms.forms import Form
 from .models import EMPLOYEE, TRIP,HOTEL, FIXED_TRIP
 
 class AddHotelForm(forms.ModelForm):
@@ -44,3 +45,8 @@ class BookFixedTripForm(forms.ModelForm):
     class Meta:
         model = FIXED_TRIP
         fields = '__all__'
+        exclude = ['available']
+
+class PaymentForm(forms.Form):
+    payment_date = forms.DateTimeField(label="Payment Date")
+    paid_amount = forms.IntegerField(label="Paid Amount")
