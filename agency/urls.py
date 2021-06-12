@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='agency-home'),
+    path('', views.browse_fixed_trips_home, name='agency-home'),
 
 
     path('search_employee',views.search_employee,name='agency-search-employee'),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('delete_hotel/<int:pk>', views.delete_hotel, name='agency-delete-hotel'),
     path('invoice/<int:pk>/', views.InvoiceDetailView.as_view(), name='invoice-detail'),
     path('invoices', views.InvoiceView, name='agency-invoice-list'),
+    path('invoices_paid', views.InvoiceView_paid, name='agency-invoice-list-paid'),
+    path('invoices_unpaid', views.InvoiceView_unpaid, name='agency-invoice-list-unpaid'),
     path('invoice/<int:pk>/payment', views.make_payment, name='agency-make-payment'),
     path('fixed_invoice/<int:pk>/', views.FixedInvoiceDetailView.as_view(), name='fixed-invoice-detail'),
     path('fixed_invoices', views.FixedInvoiceView, name='agency-fixed-invoice-list'),

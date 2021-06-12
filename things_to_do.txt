@@ -1,5 +1,4 @@
-create detail page of trips
-link trips to their detail in browse trips
+
 in manage invoices make 2 buttons:
     view invoices
     view non paid invoices

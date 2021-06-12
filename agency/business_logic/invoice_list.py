@@ -45,6 +45,18 @@ class InvoiceList:
             return INVOICE.objects.all()
         else:
             return INVOICE.objects.filter(booking__customer = user)
+
+    def get_invoices_paid(self,user):
+        if user.is_superuser:
+            return INVOICE.objects.filter(status= True)
+        else:
+            return INVOICE.objects.filter(booking__customer = user)
+    
+    def get_invoices_unpaid(self,user):
+        if user.is_superuser:
+            return INVOICE.objects.filter(status= False)
+        else:
+            return INVOICE.objects.filter(booking__customer = user)
     
     def get_fixed_invoices(self,user):
         if user.is_superuser:
