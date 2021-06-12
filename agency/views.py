@@ -35,8 +35,10 @@ class TripDetailView(DetailView):
 class HotelUpdateView(LoginRequiredMixin, UpdateView):
     model = HOTEL
     fields = ['name','city', 'address', 'image','charges']
-    
 
+class FixedTripUpdateView(LoginRequiredMixin, UpdateView):
+    model = FIXED_TRIP
+    fields = ['source','destination', 'start_date', 'end_date','available_seats']
 
 
 
@@ -294,6 +296,7 @@ def select_hotel(request,trip_pk,car_pk):
     return render(request, 'agency/select_hotel.html', context)
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser == False)
 def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
     selected_trip = agency.trips.get_trip(trip_pk)
     selected_car = agency.cars.get_car(car_pk)
@@ -318,6 +321,7 @@ def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
         return render(request,'agency/create_booking.html', context)
 
 @login_required
+@user_passes_test(lambda u: u.is_superuser == False)
 def create_fixed_booking(request,pk):
     selected_trip = agency.trips.get_fixed_trip(pk)
     if request.method == 'POST':

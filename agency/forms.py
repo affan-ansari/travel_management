@@ -16,6 +16,13 @@ class HotelUpdateForm(forms.ModelForm):
         exclude = ['available']
 
 
+class TripUpdateForm(forms.ModelForm):
+    class Meta:
+        model = TRIP
+        fields = '__all__'
+        exclude = ['status']
+
+
 class RegisterEmployeeForm(forms.ModelForm):
     class Meta:
         model = EMPLOYEE
