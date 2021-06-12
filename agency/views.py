@@ -107,6 +107,28 @@ def make_payment(request, pk):
         form = forms.PaymentForm()
         return render(request,'agency/make_payment.html',{'form': form, 'invoice': invoice})
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def make_payment_fixed_trip(request, pk):
+    invoice = agency.invoices.get_fixed_invoice(pk)
+    if request.method == 'POST':
+        form = forms.PaymentForm(request.POST)
+        if form.is_valid():
+            payment_date = form.cleaned_data.get("payment_date")
+            paid_amount = form.cleaned_data.get("paid_amount")
+            try:
+                agency.make_payment_fixed_trip(payment_date,paid_amount,invoice.id)
+                messages.success(request, "Payment Successfull")
+                return redirect('fixed-invoice-detail',invoice.id)
+            except Exception as exc:
+                messages.warning(request, f'{exc}')
+                return redirect('fixed-invoice-detail',invoice.id)
+        else:
+            return redirect('agency-make-payment',invoice.id)
+    else:
+        form = forms.PaymentForm()
+        return render(request,'agency/make_payment.html',{'form': form, 'invoice': invoice})
+
 
 def home(request):
     return render(request, 'agency/home.html')

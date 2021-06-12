@@ -50,3 +50,6 @@ class Agency:
     
     def make_payment(self, payment_date, paid_amount, invoice_pk):
         self.invoices.make_payment(payment_date, paid_amount, invoice_pk)
+    
+    def make_payment_fixed_trip(self, payment_date, paid_amount, invoice_pk):
+        self.invoices.make_payment_fixed_trip(payment_date, paid_amount, invoice_pk)

@@ -21,8 +21,7 @@
             {% endif %}
             <br>
             {% if user.is_superuser and object.status == False%}
-                <!-- <a class="btn btn-primary" href="{% url 'agency-make-payment' object.id %}"> Make Payment </a> -->
-                <a class="btn btn-primary" href="#"> Make Payment </a>
+                <a class="btn btn-primary" href="{% url 'agency-make-payment-fixed-trip' object.id %}"> Make Payment </a>
             {% endif %}
         </div>
     </div>

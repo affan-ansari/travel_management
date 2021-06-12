@@ -77,5 +77,20 @@ class InvoiceList:
             invoice.save()
         else:
             raise Exception("Paid amount should be greater or equal to charges")
+    
+    def make_payment_fixed_trip(self, payment_date, paid_amount, invoice_pk):
+        invoice = self.get_fixed_invoice(invoice_pk)
+        booking_date = invoice.booking.booking_date
+        if payment_date >= booking_date and payment_date <= invoice.booking.trip.start_date:
+            invoice.status = True
+        else:
+            raise Exception("Invalid Date!\nMust be within booking date and trip start date")
+        if paid_amount >= invoice.total_charges:
+            invoice.paid_amount = paid_amount
+            invoice.balance = paid_amount - invoice.total_charges
+            invoice.save()
+        else:
+            raise Exception("Paid amount should be greater or equal to charges")
+    
 
 # <h2><a href="{% url 'fixed-trip-detail' trip.id %}">{{ trip.id }}</a></h2>

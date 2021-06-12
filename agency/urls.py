@@ -33,5 +33,5 @@ urlpatterns = [
     path('invoice/<int:pk>/payment', views.make_payment, name='agency-make-payment'),
     path('fixed_invoice/<int:pk>/', views.FixedInvoiceDetailView.as_view(), name='fixed-invoice-detail'),
     path('fixed_invoices', views.FixedInvoiceView, name='agency-fixed-invoice-list'),
-    # path('fixed_invoice/<int:pk>/payment', views.make_payment, name='agency-make-payment'),
+    path('fixed_invoice/<int:pk>/payment', views.make_payment_fixed_trip, name='agency-make-payment-fixed-trip'),
 ]
