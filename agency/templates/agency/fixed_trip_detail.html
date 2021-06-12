@@ -14,7 +14,7 @@
             <h4> Price: Rs {{ object.price }} </h6>
             <br>
             {% if user.is_superuser %}
-                <a class="btn btn-primary" href="#"> Update Trip </a>
+                <a class="btn btn-primary" href="{% url 'agency-trip-form' object.id %}"> Update Trip </a>
             {% else %}
                 <a class="btn btn-primary" href="{% url 'agency-fixed-booking' object.id %}"> Book Trip </a>
             {% endif %}

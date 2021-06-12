@@ -106,6 +106,9 @@ class FIXED_TRIP(models.Model):
     price = models.PositiveBigIntegerField(default=0)
     available = models.BooleanField(default=True) 
 
+    def get_absolute_url(self):
+        return reverse('fixed-trip-detail', kwargs={'pk': self.id})
+
     def __str__(self):
         return 'Trip ' + str(self.id) + ' :' + self.source + ' - ' + self.destination
     
