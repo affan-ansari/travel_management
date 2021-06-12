@@ -359,8 +359,6 @@ def browse_fixed_trips(request):
 
 def browse_fixed_trips_home(request):
     trips =  agency.trips.get_fixed_trips()
-        
-    trip_filter = TripFilter()
     context = {
         'trips': trips
     }

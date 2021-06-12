@@ -56,7 +56,7 @@ class TripList:
             raise Exception(f'Trip: {id} does not exist!')
 
     def get_fixed_trips(self):
-        trips = FIXED_TRIP.objects.filter(available=True)
+        trips = FIXED_TRIP.objects.filter(available=True, available_seats__gt=0)
         return trips
 
 # <h2><a href="{% url 'fixed-trip-detail' trip.id %}">{{ trip.id }}</a></h2>
