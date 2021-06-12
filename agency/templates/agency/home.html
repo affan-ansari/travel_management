@@ -1,5 +1,16 @@
 {% extends "agency/base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
-    <h1> Page under construction </h1>
+    {% for trip in trips %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h3><a href="#">Trip: {{ trip.id }}</a></h3>
+            <h6> {{ trip.source }} to {{ trip.destination }} </h6>
+            <h6> {{ trip.start_date }} to {{ trip.end_date }}<br> </h6>
+            <h6> Seats Available {{ trip.available_seats }} </h6>
+            <h6> Rs {{ trip.price }} </h6>
+        </div>
+    </div>
+    {% endfor %}
 {% endblock content %}

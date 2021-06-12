@@ -7,6 +7,8 @@
             <img class="img-thumbnail" src = "{{ hotel.image.url }}"/>
             <h2><a href="{% url 'hotel-detail' hotel.id%}">{{ hotel.name }}</a></h2>
             <h4>{{ hotel.city}}</h4>
+            <h4>{{ hotel.address }}</h4>
+            <h4>{{ hotel.charges }}</h4>
         </div>
     </div>
     {% endfor %}

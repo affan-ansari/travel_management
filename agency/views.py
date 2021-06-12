@@ -63,6 +63,18 @@ def InvoiceView(request):
     return render(request, 'agency/invoice_list.html',context)
 
 @login_required
+def InvoiceView_paid(request):
+    invoices = agency.invoices.get_invoices_paid(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/invoice_list.html',context)
+
+@login_required
+def InvoiceView_unpaid(request):
+    invoices = agency.invoices.get_invoices_unpaid(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/invoice_list.html',context)
+
+@login_required
 @user_passes_test(lambda u: u.is_superuser)
 def make_payment(request, pk):
     invoice = agency.invoices.get_invoice(pk)
@@ -313,3 +325,13 @@ def browse_fixed_trips(request):
                 'trips': trips
             }
             return render(request,'agency/browse_trips.html',context)
+
+
+def browse_fixed_trips_home(request):
+    trips =  agency.trips.get_fixed_trips()
+        
+    trip_filter = TripFilter()
+    context = {
+        'trips': trips
+    }
+    return render(request,'agency/browse_trips.html',context)
