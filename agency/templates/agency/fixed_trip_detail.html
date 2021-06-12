@@ -1,0 +1,19 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-8">
+        <form method="POST" enctype="multipart/form-data">
+        <div class = "content-section">
+            <h3> Trip: {{ object.id }}</h3>
+            <h6> {{ object.source }} to {{ object.destination }} </h6>
+            <h6> {{ object.start_date }} to {{ object.end_date }}<br> </h6>
+            <h2> {{ object.allocated_hotel.name }} </h2>
+            <img class="img-thumbnail" src = "{{ object.allocated_hotel.image.url }}"/>
+            <h6> Seats Available: {{ object.available_seats }} </h6>
+            <hr>
+            <h4> Price: Rs {{ object.price }} </h6>
+            <br>
+            <a class="btn btn-primary" href="{% url 'agency-fixed-booking' object.id %}"> Book Trip </a>
+        </div>
+    </div>
+{% endblock content %}

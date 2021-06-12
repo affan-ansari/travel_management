@@ -1,5 +1,6 @@
 from .invoice import Invoice
-from ..models import INVOICE
+from .fixed_invoice import FixedInvoice
+from ..models import FIXED_INVOICE, INVOICE
 from django.core.exceptions import ObjectDoesNotExist
 
 class InvoiceList:
@@ -18,6 +19,12 @@ class InvoiceList:
         new_invoice = Invoice(booking, total_price)
         new_invoice.save()
         return new_invoice
+    
+    def add_fixed_invoice(self, booking):
+        total_price = booking.trip.price
+        new_invoice = FixedInvoice(booking, total_price)
+        new_invoice.save()
+        return new_invoice
 
     def get_invoice(self,id):
         try:
@@ -26,11 +33,24 @@ class InvoiceList:
         except ObjectDoesNotExist:
             raise Exception(f'Trip: {id} does not exist!')
     
+    def get_fixed_invoice(self,id):
+        try:
+            invoice = FIXED_INVOICE.objects.get(id = id)
+            return invoice
+        except ObjectDoesNotExist:
+            raise Exception(f'Trip: {id} does not exist!')
+
     def get_invoices(self,user):
         if user.is_superuser:
             return INVOICE.objects.all()
         else:
             return INVOICE.objects.filter(booking__customer = user)
+    
+    def get_fixed_invoices(self,user):
+        if user.is_superuser:
+            return FIXED_INVOICE.objects.all()
+        else:
+            return FIXED_INVOICE.objects.filter(booking__customer = user)
     
     def make_payment(self, payment_date, paid_amount, invoice_pk):
         invoice = self.get_invoice(invoice_pk)

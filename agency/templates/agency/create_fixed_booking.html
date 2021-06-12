@@ -1,0 +1,24 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4"> Booking </legend>
+                <h2>{{ trip.source }} - {{ trip.destination }}</h2>
+                <h6> {{ trip.start_date }} to {{ trip.end_date }}<br> </h6>
+            </fieldset>
+            <div class="col-md-8">
+                <div class = "content-section">
+                    <img class="img-thumbnail" src = "{{ trip.allocated_hotel.image.url }}"/>
+                    <h2>{{ trip.allocated_hotel.name }}</a></h2>
+                </div>
+            </div>
+            <h4> Price: Rs {{ trip.price }} </h6>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit"> Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

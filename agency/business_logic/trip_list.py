@@ -47,6 +47,13 @@ class TripList:
             return trip
         except ObjectDoesNotExist:
             raise Exception(f'Trip: {id} does not exist!')
+    
+    def get_fixed_trip(self,id):
+        try:
+            trip = FIXED_TRIP.objects.get(id = id)
+            return trip
+        except ObjectDoesNotExist:
+            raise Exception(f'Trip: {id} does not exist!')
 
     def get_fixed_trips(self):
         trips = FIXED_TRIP.objects.filter(available=True)

@@ -1,0 +1,21 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    {% for object in invoices %} 
+        <div class="col-md-8">
+            <div class = "content-section">
+                <h5>Customer: {{ object.booking.customer.username }} </h5>
+                <h5><a href="{% url 'fixed-invoice-detail' object.id%}">Invoice: {{ object.id }}</a></h5>
+                <h6>Booking: {{ object.booking.id }}</h6> 
+                <h6>Total Charges: {{ object.total_charges }}</h6>
+                <hr>
+                {% if object.status == True %}
+                    <h5>Status: <i style="color:green;"> Paid </i></h5>
+                {% else %}
+                    <h5>Status: <i style="color:red;"> Not Paid </i></h5>
+                {% endif %}
+                
+            </div>
+        </div>
+    {% endfor %}
+{% endblock content %}

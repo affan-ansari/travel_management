@@ -155,16 +155,19 @@ class INVOICE(models.Model):
     balance = models.PositiveIntegerField(default= 0)
 
 class FIXED_BOOKING(models.Model):
-    trip = models.OneToOneField(FIXED_TRIP,on_delete=models.PROTECT)
+    trip = models.ForeignKey(FIXED_TRIP,on_delete=models.PROTECT)
     customer = models.ForeignKey(User,on_delete=models.PROTECT)
+    booking_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return str(self.id) + ': ' + self.trip.source + '-' + self.trip.destination
 
 class FIXED_INVOICE(models.Model):
-    booking = models.OneToOneField(BOOKING,on_delete=models.PROTECT)
+    booking = models.OneToOneField(FIXED_BOOKING,on_delete=models.PROTECT)
     total_charges = models.PositiveIntegerField()
     status = models.BooleanField(default = False)
+    paid_amount = models.PositiveIntegerField(default = 0)
+    balance = models.PositiveIntegerField(default= 0)
 
 class TICKET(models.Model):
     booking = models.ForeignKey(BOOKING,null=True,on_delete=models.PROTECT)

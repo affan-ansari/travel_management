@@ -39,8 +39,14 @@ class Agency:
     def add_booking(self,trip,allocated_car,allocated_hotel,customer):
         return self.bookings.add_booking(trip,allocated_car,allocated_hotel,customer)
     
+    def add_fixed_booking(self,trip, customer):
+        return self.bookings.add_fixed_booking(trip, customer)
+    
     def add_invoice(self, booking):
         return self.invoices.add_invoice(booking)
+    
+    def add_fixed_invoice(self, booking):
+        return self.invoices.add_fixed_invoice(booking)
     
     def make_payment(self, payment_date, paid_amount, invoice_pk):
         self.invoices.make_payment(payment_date, paid_amount, invoice_pk)

@@ -1,0 +1,29 @@
+{% extends "agency/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="col-md-8">
+        <div class = "content-section">
+            <h2>Invoice: {{ object.id }}</h2>
+            <h4>Booking: {{ object.booking.id }}</h4> 
+            <h5>{{ object.booking.trip.source }} To {{ object.booking.trip.destination }}</h5>
+            <h5>From {{ object.booking.trip.start_date }}</h5>
+            <h5>To {{ object.booking.trip.end_date }}</h5>
+            <hr>
+            <h5>Paid Amount: <b> {{ object.paid_amount }} </b></h5>
+            <h5>Total Charges: <b> {{ object.total_charges }} </b></h5>
+            <hr>
+            <h5>Balance: <b> {{ object.balance }} </b></h5>
+            <hr>
+            {% if object.status == True %}
+                <h4>Status: <i style="color:green;"> Paid </i></h4>
+            {% else %}
+                <h4>Status: <i style="color:red;"> Not Paid </i></h4>
+            {% endif %}
+            <br>
+            {% if user.is_superuser and object.status == False%}
+                <!-- <a class="btn btn-primary" href="{% url 'agency-make-payment' object.id %}"> Make Payment </a> -->
+                <a class="btn btn-primary" href="#"> Make Payment </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

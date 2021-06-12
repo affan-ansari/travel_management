@@ -10,7 +10,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import EMPLOYEE,HOTEL, INVOICE
+from .models import EMPLOYEE, FIXED_TRIP, HOTEL, INVOICE, FIXED_INVOICE
 from .business_logic.agency import Agency
 from . import forms
 from .filters import TripFilter
@@ -26,6 +26,11 @@ class HotelDetailView(DetailView):
 class InvoiceDetailView(DetailView):
     model = INVOICE
 
+class FixedInvoiceDetailView(DetailView):
+    model = FIXED_INVOICE
+ 
+class TripDetailView(DetailView):
+    model = FIXED_TRIP
 
 class HotelUpdateView(LoginRequiredMixin, UpdateView):
     model = HOTEL
@@ -61,6 +66,12 @@ def InvoiceView(request):
     invoices = agency.invoices.get_invoices(request.user)
     context = {'invoices':invoices}
     return render(request, 'agency/invoice_list.html',context)
+
+@login_required
+def FixedInvoiceView(request):
+    invoices = agency.invoices.get_fixed_invoices(request.user)
+    context = {'invoices':invoices}
+    return render(request, 'agency/fixed_invoice_list.html',context)
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
@@ -270,6 +281,25 @@ def create_custom_booking(request,trip_pk,car_pk,hotel_pk):
             'hotel': selected_hotel,
         }
         return render(request,'agency/create_booking.html', context)
+
+def create_fixed_booking(request,pk):
+    selected_trip = agency.trips.get_fixed_trip(pk)
+    if request.method == 'POST':
+        try:
+            new_booking = agency.add_fixed_booking(selected_trip,request.user)
+            new_invoice = agency.add_fixed_invoice(new_booking)
+            selected_trip.available_seats -= 1
+            selected_trip.save()
+            messages.success(request, f'Trip Booked successfully!')
+            return redirect('fixed-invoice-detail', new_invoice.id) # REDIRECT TO INVOICE DETAIL
+        except Exception as exc:
+            messages.warning(request,f'{exc}')
+            return redirect('agency-home')
+    else:
+        context = {
+            'trip': selected_trip,
+        }
+        return render(request,'agency/create_fixed_booking.html', context)
 
 @login_required
 @user_passes_test(lambda u: u.is_superuser)
