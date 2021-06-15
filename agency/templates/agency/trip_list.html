@@ -4,7 +4,7 @@
     {% for trip in trips %}
     <div class="col-md-8">
         <div class = "content-section">
-            <h3><a href="#">Trip: {{ trip.id }}</a></h3>
+            <h3><a href="{% url 'fixed-trip-detail' trip.id%}">Trip: {{ trip.id }}</a></h3>
             <h6> {{ trip.source }} to {{ trip.destination }} </h6>
             <h6> {{ trip.start_date }} to {{ trip.end_date }}<br> </h6>
             <h6> Seats Available {{ trip.available_seats }} </h6>
